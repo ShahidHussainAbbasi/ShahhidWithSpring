@@ -226,4 +226,21 @@ public class UserService implements IUserService {
 
     }
 
+    @Override
+    public List<String> getUsersIdFromSessionRegistry() {
+        return sessionRegistry.getAllPrincipals()
+            .stream()
+            .filter((u) -> !sessionRegistry.getAllSessions(u, false)
+                .isEmpty())
+            .map(o -> {
+                if (o instanceof User) {
+                    return ((User) o).getId().toString();
+                } else {
+                    return o.toString();
+                }
+            })
+            .collect(Collectors.toList());
+
+    }
+
 }
